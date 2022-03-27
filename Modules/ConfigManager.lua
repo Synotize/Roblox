@@ -8,13 +8,19 @@
       3/21/2022
           + Placeholder Phase (Haven't even tested the code yet)
           + Save, Load Features coming soon (hopefully)
+      3/26/2022
 ]]
+
 local Config = {
     Folder = "Settings",
     Name = "Test",
     Extension = "json",
     Content = "{}"
 }
+
+local function Date()
+    return os.date("%c")
+end
 
 function Config:NewConfig(Settings)
     local NewConfig = setmetatable({}, self)
@@ -29,13 +35,13 @@ function Config:NewConfig(Settings)
     end
 
     -- Folder Check
-    if (not isfolder(NewConfig.Folder)) then
+    if not isfolder(NewConfig.Folder) then
         makefolder(NewConfig.Folder)
     end
 
     -- File Check
-    if (not isfile(NewConfig.Folder .. '\\' .. NewConfig.Name .. '.' .. NewConfig.Extension)) then
-        print('no exists')
+    if not isfile(NewConfig.Folder .. '\\' .. NewConfig.Name .. '.' .. NewConfig.Extension) then
+        writefile(NewConfig.Folder .. '\\' .. NewConfig.Name .. '.' .. NewConfig.Extension, NewConfig.Content)
     end
 
     self.__index = self
@@ -43,9 +49,37 @@ function Config:NewConfig(Settings)
     return NewConfig
 end
 
+function Config:Get()
+    --[[
+      Will need to add a check, to see if the user gave certain inputs.
+      Because if i don't do this, technically nothing would work (?).
+      So let's say it needs to be initialized before running this.
+    ]]
+
+    if #{listfiles} ~= 1 then
+        while true do end
+    end
+
+    local NewCopy = {};
+    for k, v in next, listfiles(self.Folder) do
+        -- Escape Certain Characters
+        NewCopy[#NewCopy + 1] = v:sub(#self.Folder + 2, -5)
+    end
+
+    -- Sort
+    table.sort(NewCopy, function(file1, file2)
+        return file1 < file2
+    end)
+
+    return NewCopy
+end
+
 local Settings = Config:NewConfig({
-    Folder = "Settings2",
-    Name = "Test",
-    Extension = "json",
+    Folder = "Settings1",
+    Name = "idk",
+    Extension = "txt",
     Content = "{}"
 })
+
+-- Testing
+Settings:Get()
