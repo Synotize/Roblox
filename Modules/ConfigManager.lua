@@ -9,7 +9,8 @@
           + Placeholder Phase (Haven't even tested the code yet)
           + Save, Load Features coming soon (hopefully)
       3/26/2022
-          + Added Get(<void>) function, return list of configs in descending order.
+          + Added Get(<void>) function, return list of configs in ascending order.
+          + Added DeepCopy(<table>) recursion function, will be used to convert types.
 ]]
 
 local Config = {
@@ -21,6 +22,17 @@ local Config = {
 
 local function Date()
     return os.date("%c")
+end
+
+local function DeepCopy(Table : table)
+    local Copy
+    for k,v in next, Table do
+        if typeof(v) == 'table' then
+            v = DeepCopy(v)
+        end
+        Copy[k] = v
+    end
+    return Copy
 end
 
 function Config:NewConfig(Settings)
