@@ -9,6 +9,7 @@
           + Placeholder Phase (Haven't even tested the code yet)
           + Save, Load Features coming soon (hopefully)
       3/26/2022
+          + Added Get(<void>) function, return list of configs in descending order.
 ]]
 
 local Config = {
@@ -51,9 +52,9 @@ end
 
 function Config:Get()
     --[[
-      Will need to add a check, to see if the user gave certain inputs.
-      Because if i don't do this, technically nothing would work (?).
-      So let's say it needs to be initialized before running this.
+       Will need to add a check, to see if the user gave certain inputs.
+       Because if i don't do this, technically nothing would work (?).
+       So let's say it needs to be initialized before running this.
     ]]
 
     if #{listfiles} ~= 1 then
